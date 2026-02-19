@@ -118,7 +118,7 @@
 		"commander": "^13.1.0",
 		"fs-extra": "^11.3.0",
 		"gray-matter": "^4.0.3",
-		"sql.js": "^1.13.0",
+		"@dao-xyz/sqlite3-vec": "^0.0.19",
 		"lottie-web": "^5.13.0",
 		"lucide-svelte": "^0.561.0",
 		"mdsvex": "^0.12.6",

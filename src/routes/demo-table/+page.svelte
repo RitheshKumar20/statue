@@ -1,7 +1,6 @@
 <script lang="ts">
-  import { Table, SQLite } from 'statue-ssg';
-
-  const columns = ['ID', 'Name', 'Role'];
+  import { Table } from 'statue-ssg';
+  import SQLite from '$lib/components/SQLite.svelte';
 </script>
 
 <h1>Table Demo (SQLite-backed)</h1>
