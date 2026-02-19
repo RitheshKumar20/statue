@@ -33,3 +33,7 @@ statue_test_env/
 
 # Default template backup (local only)
 templates/_default/
+
+# Emscripten SDK (used by scripts/build-sqlite-vec-wasm.sh)
+.emsdk
+.local

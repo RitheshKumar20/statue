@@ -20,6 +20,8 @@
 		"./themes/*": "./src/lib/themes/*",
 		"./styles.css": "./src/lib/index.css",
 		"./resources/*": "./resources/*",
+		"./sqlite-wasm/sqlite3.mjs": "./sqlite-wasm/sqlite3.mjs",
+		"./sqlite-wasm/sqlite3.wasm": "./sqlite-wasm/sqlite3.wasm",
 		"./package.json": "./package.json"
 	},
 	"bin": {
@@ -32,6 +34,7 @@
 		"resources",
 		"templates",
 		"static",
+		"sqlite-wasm",
 		"scripts/generate-exports.js",
 		"scripts/statue-cli.js",
 		"scripts/generate-seo-files.js",
@@ -58,6 +61,7 @@
 		"build": "vite build",
 		"postbuild": "node scripts/generate-seo-files.js && node scripts/run-pagefind.js && node scripts/generate-rss-feed.js",
 		"generate:exports": "node scripts/generate-exports.js",
+		"build:wasm": "bash scripts/build-sqlite-vec-wasm.sh",
 		"preview": "npx -y serve build",
 		"preview:vite": "vite preview",
 		"prepublishOnly": "npm run generate:exports && npm run build",
@@ -118,7 +122,6 @@
 		"commander": "^13.1.0",
 		"fs-extra": "^11.3.0",
 		"gray-matter": "^4.0.3",
-		"sql.js": "^1.13.0",
 		"lottie-web": "^5.13.0",
 		"lucide-svelte": "^0.561.0",
 		"mdsvex": "^0.12.6",
