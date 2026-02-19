@@ -21,6 +21,20 @@ async function setupStatueSSG(options = {}) {
     console.log(chalk.green('✓ shared resources copied'));
   }
 
+  // Copy sqlite-wasm so SQLite/VectorSearch components can load it from /sqlite-wasm/
+  const sqliteWasmDir = path.join(sourceDir, 'sqlite-wasm');
+  if (fs.existsSync(sqliteWasmDir)) {
+    const targetSqliteWasm = path.join(targetDir, 'static', 'sqlite-wasm');
+    fs.ensureDirSync(targetSqliteWasm);
+    for (const name of ['sqlite3.mjs', 'sqlite3.wasm']) {
+      const src = path.join(sqliteWasmDir, name);
+      if (fs.existsSync(src)) {
+        fs.copySync(src, path.join(targetSqliteWasm, name), { overwrite: true });
+      }
+    }
+    console.log(chalk.green('✓ sqlite-wasm copied to static/sqlite-wasm'));
+  }
+
   // 3. Copy template (src + site.config.json + static + scripts)
   const templateDir = path.join(sourceDir, 'templates', templateName);
 

@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount, onDestroy } from 'svelte';
-  import wasmUrl from '../../../sqlite-wasm/sqlite3.wasm?url';
+  import { getSqlite3 } from '../sqlite-wasm-init.js';
 
   /** DB path, e.g. '/demo.db'. Must contain user_vec (vec0) and query_vectors table. */
   export let dbPath = '/demo.db';
@@ -22,12 +22,7 @@
 
   onMount(async () => {
     try {
-      const initModule = (await import('../../../sqlite-wasm/sqlite3.mjs')).default;
-      const sqlite3 = await initModule({
-        print: () => {},
-        printErr: () => {},
-        locateFile: (file: string) => (file.endsWith('.wasm') ? wasmUrl : file)
-      });
+      const sqlite3 = await getSqlite3();
 
       const res = await fetch(dbPath);
       const buffer = await res.arrayBuffer();
@@ -70,7 +65,6 @@
       queryNames = resultRows.map((row: unknown) => (row as string[])[0]);
 
       db = database;
-      sqlite3Module = sqlite3;
     } catch (e) {
       error = 'Failed to load database';
       console.error(e);
@@ -104,7 +98,10 @@
       getQuery.finalize();
 
       if (!embedding?.buffer) return;
-      const queryBlob = embedding.buffer;
+      const queryBlob: ArrayBuffer =
+        embedding.buffer instanceof ArrayBuffer
+          ? embedding.buffer
+          : new Uint8Array(embedding).buffer.slice(0);
 
       const stmt = db.prepare(
         `SELECT rowid, distance FROM ${vecTableName} WHERE embedding MATCH ? ORDER BY distance LIMIT ?`
@@ -187,7 +184,7 @@
       {/if}
     {/if}
   </div>
-#endif}
+{/if}
 
 <style>
   .vector-search {

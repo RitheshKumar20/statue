@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte';
-  import wasmUrl from '../../../sqlite-wasm/sqlite3.wasm?url';
+  import { getSqlite3 } from '../sqlite-wasm-init.js';
 
   export let dbPath: string; // e.g. '/demo.db'
   export let query: string; // e.g. 'SELECT * FROM users'
@@ -12,12 +12,7 @@
 
   onMount(async () => {
     try {
-      const initModule = (await import('../../../sqlite-wasm/sqlite3.mjs')).default;
-      const sqlite3 = await initModule({
-        print: () => {},
-        printErr: () => {},
-        locateFile: (file: string) => (file.endsWith('.wasm') ? wasmUrl : file)
-      });
+      const sqlite3 = await getSqlite3();
 
       const res = await fetch(dbPath);
       const buffer = await res.arrayBuffer();
